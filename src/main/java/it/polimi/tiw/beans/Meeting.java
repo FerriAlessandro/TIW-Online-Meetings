@@ -8,6 +8,7 @@ public class Meeting{
 	public static final int MAX_PARTECIPANTS = 5;
 	private int id;
 	private String title;
+	//private String organizer; //Organizer's username
 	private Date meetingDate;
 	private Time startingTime;
 	private int meetingDuration; //Duration in minutes
@@ -21,9 +22,18 @@ public class Meeting{
 		this.meetingDuration = duration;
 	}
 	
+	public Meeting() {
+	
+	}
+	
+	
 	public int getID() {
 		return id;
 	}
+	
+	/*public String getOrganizer() {
+		return organizer;
+	}*/
 	
 	public String getTitle() {
 		return title;
@@ -39,5 +49,27 @@ public class Meeting{
 	
 	public int getDuration() {
 		return meetingDuration;
+	}
+	
+	public void setID(int id) {
+		this.id = id;
+	}
+	
+	/*public void setOrganizer(String organizer) {
+		this.organizer = organizer;
+	}*/
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public void setDate(Date date) {
+		this.meetingDate = date;
+	}
+	public void setStartingTime(Time time) {
+		this.startingTime = time;
+	}
+	public void setDuration(int minutes) {
+		this.meetingDuration = minutes;
 	}
 }
