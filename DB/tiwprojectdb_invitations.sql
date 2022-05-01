@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.28, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: tiwprojectdb
 -- ------------------------------------------------------
@@ -24,11 +24,11 @@ DROP TABLE IF EXISTS `invitations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `invitations` (
   `ID_USER` int NOT NULL,
-  `ID_REUNION` int NOT NULL,
-  PRIMARY KEY (`ID_USER`,`ID_REUNION`),
-  KEY `ID_REUNION` (`ID_REUNION`),
+  `ID_MEETING` int NOT NULL,
+  PRIMARY KEY (`ID_USER`,`ID_MEETING`),
+  KEY `ID_REUNION` (`ID_MEETING`),
   CONSTRAINT `invitations_ibfk_1` FOREIGN KEY (`ID_USER`) REFERENCES `user` (`ID`),
-  CONSTRAINT `invitations_ibfk_2` FOREIGN KEY (`ID_REUNION`) REFERENCES `reunion` (`ID`)
+  CONSTRAINT `invitations_ibfk_2` FOREIGN KEY (`ID_MEETING`) REFERENCES `meetings` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-29 16:37:38
+-- Dump completed on 2022-05-01 22:39:08
