@@ -83,13 +83,13 @@ public class UserDAO{
 		PreparedStatement preparedStatement;
 		ResultSet queryResult;
 		ArrayList<User> users = new ArrayList<>();
-		String query = "SELECT username FROM user WHERE username != ?";
+		String query = "SELECT username FROM user WHERE id != ?";
 		preparedStatement = connection.prepareStatement(query);
 	
-		String userName = user.getUserName(); //The username of the user who is creating a meeting, he can't invite himself! We remove him
+		int id = user.getID(); //The ID of the user who is creating a meeting, he can't invite himself! We remove him
 											  //from the list of possible users to invite
 		
-		preparedStatement.setString(1, userName);
+		preparedStatement.setInt(1, id);
 		queryResult = preparedStatement.executeQuery();
 		
 		if(!queryResult.isBeforeFirst()) //If zero users are registered 
