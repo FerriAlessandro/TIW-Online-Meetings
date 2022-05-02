@@ -42,16 +42,16 @@ public class UserDAO{
 			
 	}
 	
-	public User checkRegistration(String userName, String password, String repeat_password, String email) throws SQLException{
+	public boolean checkRegistration(String userName, String password, String repeat_password, String email) throws SQLException{
 		
 		PreparedStatement preparedStatement, registrationPreparedStatement;
-		ResultSet queryResult, registrationQueryResult;
+		ResultSet queryResult;
 		User user;
 		
 		String checkQuery = "SELECT id FROM user WHERE username = ? OR email = ?"; //if someone is already registered with the same username or email
 																			       //this query will return a result
 		String registrationQuery = "INSERT INTO user (username, psw, email) VALUES (?, ?, ?)";
-		
+ 
 		if(!password.equals(repeat_password))
 			throw new PasswordMatchException(); //TODO PasswordMatchException
 		
@@ -60,8 +60,10 @@ public class UserDAO{
 		preparedStatement.setString(2,  email);
 		
 		queryResult = preparedStatement.executeQuery();
+		
 		if(queryResult.isBeforeFirst()) //if the query returned a result 
-			return null;
+			return false;
+		
 		else {
 			
 			registrationPreparedStatement = connection.prepareStatement(registrationQuery);
@@ -69,14 +71,12 @@ public class UserDAO{
 			registrationPreparedStatement.setString(2, password);
 			registrationPreparedStatement.setString(3,  email);
 			
-			registrationQueryResult = registrationPreparedStatement.executeQuery();
+			registrationPreparedStatement.executeQuery();
 			
-			return checkCredentials(userName, password); //Return the new user 	
-			
+			return true; 	
 		}
-		
-		
 	}
+	
 	
 	public List<User> GetRegisteredUsers (User user) throws SQLException{ //'user' is the current user that needs to select other users to invite to the meeting
 		

@@ -8,6 +8,7 @@ public class Meeting{
 	public static final int MAX_PARTECIPANTS = 5;
 	private int id;
 	private String title;
+	private int id_organizer;
 	//private String organizer; //Organizer's username
 	private Date meetingDate;
 	private Time startingTime;
@@ -58,6 +59,15 @@ public class Meeting{
 	/*public void setOrganizer(String organizer) {
 		this.organizer = organizer;
 	}*/
+	
+	public int getOrganizerId() {
+		return this.id_organizer;
+	}
+	
+	public void setOrganizerId(int id_organizer) {
+		this.id_organizer = id_organizer;
+	}
+
 	
 	public void setTitle(String title) {
 		this.title = title;

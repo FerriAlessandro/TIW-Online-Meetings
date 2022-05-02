@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.sql.Date;
+import java.util.List;
 
 import it.polimi.tiw.beans.Meeting;
 import it.polimi.tiw.beans.User;
@@ -77,5 +80,64 @@ public class MeetingDAO{
 		
 	}
 	
-	
+	public void createMeeting(List<User> guests, Meeting meeting) throws SQLException {
+		PreparedStatement meetingPreparedStatement;
+		PreparedStatement invitationPreparedStatement;
+		PreparedStatement meetingIdPreparedStatement;
+		
+		ResultSet meetingIdResultSet;
+		String addMeetingQuery = "INSERT INTO meetings (id_organizer,title,meeting_date,starting_time,minutes) VALUES (?, ?, ?, ?, ?)";
+		String addInvitationQuery = "INSERT INTO invitations (id_user, id_meeting) VALUES (?, ?)";
+		String getMeetingIdQuery = "SELECT max(id) FROM meetings";
+		int meetingID;
+		int id_organizer = meeting.getOrganizerId();
+		String title = meeting.getTitle();
+		Date date = meeting.getDate();
+		Time time = meeting.getTime();
+		int duration = meeting.getDuration();
+		
+		connection.setAutoCommit(false);
+		try {
+			meetingPreparedStatement = connection.prepareStatement(addMeetingQuery);
+			meetingPreparedStatement.setInt(1, id_organizer);
+			meetingPreparedStatement.setString(2, title);
+			meetingPreparedStatement.setDate(3, date);
+			meetingPreparedStatement.setTime(4, time);
+			meetingPreparedStatement.setInt(5, duration);
+			meetingPreparedStatement.executeQuery();
+			
+			meetingIdPreparedStatement = connection.prepareStatement(getMeetingIdQuery);
+			meetingIdResultSet = meetingIdPreparedStatement.executeQuery();
+			
+			if(!meetingIdResultSet.isBeforeFirst())
+				throw new SQLException();
+			
+			else {
+				meetingIdResultSet.next();
+				meetingID = meetingIdResultSet.getInt("id");
+			}
+			
+			invitationPreparedStatement = connection.prepareStatement(addInvitationQuery);
+			
+			for (User user : guests) {
+				invitationPreparedStatement.setInt(1,user.getID());
+				invitationPreparedStatement.setInt(2,meetingID);
+				invitationPreparedStatement.addBatch();
+			}	
+			
+			invitationPreparedStatement.executeBatch();
+			
+		} catch (SQLException e) {
+			connection.rollback(); // if update 1 OR 2 fails, roll back all work
+			throw e;
+			
+		} finally {
+			connection.setAutoCommit(true);
+		}
+
+	}
+		
+			
 }
+	
+	
