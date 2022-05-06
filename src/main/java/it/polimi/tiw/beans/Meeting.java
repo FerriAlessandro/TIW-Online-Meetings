@@ -1,7 +1,6 @@
 package it.polimi.tiw.beans;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.util.Date;
 
 public class Meeting{
 	
@@ -10,16 +9,14 @@ public class Meeting{
 	private String title;
 	private int id_organizer;
 	private String organizerName;
-	private Date meetingDate;
-	private Time startingTime;
-	private int meetingDuration; //Duration in minutes
+	private Date meetingDate; 
+	private int meetingDuration; //in minutes
 	
 	
-	public Meeting(int id, String title, Date date, Time time, int duration) {
+	public Meeting(int id, String title, Date date, int duration) {
 		this.id = id;
 		this.title = title;
 		this.meetingDate = date;
-		this.startingTime = time;
 		this.meetingDuration = duration;
 	}
 	
@@ -44,9 +41,6 @@ public class Meeting{
 		return meetingDate;
 	}
 	
-	public Time getTime() {
-		return startingTime;
-	}
 	
 	public int getDuration() {
 		return meetingDuration;
@@ -76,9 +70,7 @@ public class Meeting{
 	public void setDate(Date date) {
 		this.meetingDate = date;
 	}
-	public void setStartingTime(Time time) {
-		this.startingTime = time;
-	}
+
 	public void setDuration(int minutes) {
 		this.meetingDuration = minutes;
 	}
