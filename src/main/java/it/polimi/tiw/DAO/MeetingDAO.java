@@ -56,7 +56,9 @@ public class MeetingDAO{
 		PreparedStatement preparedStatement;
 		ResultSet resultSet;
 		ArrayList<Meeting> meetings = new ArrayList<>();
-		String query = "Select * FROM meetings JOIN invitations ON meetings.id = invitations.id_meeting"
+		String query = "Select meetings.id, meetings.title, meetings.meeting_date, meetings.starting_time, meetings.minutes, user.username "
+				+ "FROM meetings JOIN invitations ON meetings.id = invitations.id_meeting"
+				+ "JOIN user ON invitations.id_user = user.id"
 				+ "WHERE invitations.id_user = ?";
 		int id = user.getID();
 		preparedStatement = connection.prepareStatement(query);
@@ -73,6 +75,7 @@ public class MeetingDAO{
 				tmp.setStartingTime(resultSet.getTime("starting_time"));
 				tmp.setDuration(resultSet.getInt("minutes"));
 				tmp.setID(resultSet.getInt("id"));
+				tmp.setOrganizerName(resultSet.getString("username"));
 				meetings.add(tmp);
 			}
 			return meetings;

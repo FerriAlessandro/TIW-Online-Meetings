@@ -9,7 +9,7 @@ public class Meeting{
 	private int id;
 	private String title;
 	private int id_organizer;
-	//private String organizer; //Organizer's username
+	private String organizerName;
 	private Date meetingDate;
 	private Time startingTime;
 	private int meetingDuration; //Duration in minutes
@@ -32,9 +32,9 @@ public class Meeting{
 		return id;
 	}
 	
-	/*public String getOrganizer() {
-		return organizer;
-	}*/
+	public String getOrganizerName() {
+		return organizerName;
+	}
 	
 	public String getTitle() {
 		return title;
@@ -56,9 +56,9 @@ public class Meeting{
 		this.id = id;
 	}
 	
-	/*public void setOrganizer(String organizer) {
-		this.organizer = organizer;
-	}*/
+	public void setOrganizerName(String username) {
+		this.organizerName = username;
+	}
 	
 	public int getOrganizerId() {
 		return this.id_organizer;
