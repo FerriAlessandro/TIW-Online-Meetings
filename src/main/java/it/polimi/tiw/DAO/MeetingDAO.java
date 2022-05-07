@@ -64,6 +64,7 @@ public class MeetingDAO{
 		PreparedStatement preparedStatement;
 		ResultSet resultSet;
 		ArrayList<Meeting> meetings = new ArrayList<>();
+
 		String query = "Select meetings.id, meetings.title, meetings.meeting_date, meetings.minutes,"
 				+ "meetings.id_organizer, user.username "
 				+ "FROM meetings JOIN invitations ON meetings.id = invitations.id_meeting"
