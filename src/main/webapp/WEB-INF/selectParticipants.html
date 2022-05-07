@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Participants</title>
+</head>
+<body>
+	<div>
+		<p>Complete the form below to invite participants to your meeting</p>
+		<form action="#" th:action="@{/CreateMeeting}" method="post">
+			<fieldset>
+				<div th:if="${users.size() > 0}">
+					<h3>Registered users:</h3>
+					<p th:each="u : ${users}">
+						<input type="checkbox" name="user_id" th:value="${u.getID()}" th:checked="${selectedUsers.contains(u.getID())}"/>
+						<label th:text="${u.getUsername()}">Ale</label>
+					</p>
+					<p>
+						<input type="hidden" name="title" th:value="${meeting.title}"/>
+						<input type="hidden" name="organizerId" th:value="${meeting.getOrganizerId()}"/>
+						<input type="hidden" name="organizerName" th:value="${meeting.getOrganizerName()}"/>
+						<input type="hidden" name="date" th:value="meeting.getDate()"/>
+						<input type="hidden" name="duration" th:value="${meeting.getDuration()}"/>
+					</p>
+					<input type="submit" value="Submit">
+				</div>
+				<div th:if="${users.size() == 0}">
+					<p>No users registered</p>
+					<a href="home.html" th:href="@{/GoToHomePage}"> Go back to home page </a>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</body>
+</html>
