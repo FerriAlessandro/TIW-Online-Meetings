@@ -21,6 +21,7 @@
 						<input type="hidden" name="organizerName" th:value="${meeting.getOrganizerName()}"/>
 						<input type="hidden" name="date" th:value="meeting.getDate()"/>
 						<input type="hidden" name="duration" th:value="${meeting.getDuration()}"/>
+						<input type="hidden" name="attemptCounter" th:value="$attempts"/> <!-- Number of meeting creation attempts -->
 					</p>
 					<input type="submit" value="Submit">
 				</div>
