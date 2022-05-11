@@ -79,9 +79,8 @@ public class UserDAO{
 		PreparedStatement preparedStatement;
 		ResultSet queryResult;
 		ArrayList<User> users = new ArrayList<>();
-		String query = "SELECT username FROM user WHERE id != ?";
+		String query = "select username from user where id!=?";
 		preparedStatement = connection.prepareStatement(query);
-	
 		int id = user.getID(); //The ID of the user who is creating a meeting, he can't invite himself! We remove him
 											  //from the list of possible users to invite
 		
@@ -93,7 +92,6 @@ public class UserDAO{
 		while(queryResult.next()) {
 				
 			User tmp = new User();
-			tmp.setID(queryResult.getInt("id"));
 			tmp.setUserName(queryResult.getString("username"));
 			users.add(tmp);
 		}
