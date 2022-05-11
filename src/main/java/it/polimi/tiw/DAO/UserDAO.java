@@ -42,7 +42,7 @@ public class UserDAO{
 			
 	}
 	
-	public boolean checkRegistration(String userName, String password, String repeat_password, String email) throws SQLException{
+	public boolean checkRegistration(String username, String password, String email) throws SQLException{
 		
 		PreparedStatement preparedStatement, registrationPreparedStatement;
 		ResultSet queryResult;
@@ -51,12 +51,9 @@ public class UserDAO{
 		String checkQuery = "SELECT id FROM user WHERE username = ? OR email = ?"; //if someone is already registered with the same username or email
 																			       //this query will return a result
 		String registrationQuery = "INSERT INTO user (username, psw, email) VALUES (?, ?, ?)";
- 
-		if(!password.equals(repeat_password))
-			throw new PasswordMatchException(); //TODO PasswordMatchException
 		
 		preparedStatement= connection.prepareStatement(checkQuery);
-		preparedStatement.setString(1,  userName);
+		preparedStatement.setString(1,  username);
 		preparedStatement.setString(2,  email);
 		
 		queryResult = preparedStatement.executeQuery();
@@ -67,11 +64,10 @@ public class UserDAO{
 		else {
 			
 			registrationPreparedStatement = connection.prepareStatement(registrationQuery);
-			registrationPreparedStatement.setString(1, userName);
+			registrationPreparedStatement.setString(1, username);
 			registrationPreparedStatement.setString(2, password);
-			registrationPreparedStatement.setString(3,  email);
-			
-			registrationPreparedStatement.executeQuery();
+			registrationPreparedStatement.setString(3, email);
+			registrationPreparedStatement.executeUpdate();
 			
 			return true; 	
 		}

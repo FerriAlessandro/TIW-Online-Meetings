@@ -66,10 +66,20 @@ public class CheckLogin extends HttpServlet{
 			ctx.setVariable("loginErrorMsg", "Incorrect username or password");
 			path = "/index.html";
 			templateEngine.process(path, ctx, response.getWriter());
+			return;
 		} else {
 			request.getSession().setAttribute("user", user);
 			path = getServletContext().getContextPath() + "/HomePage";
 			response.sendRedirect(path);
+			return;
+		}
+	}
+	
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }
