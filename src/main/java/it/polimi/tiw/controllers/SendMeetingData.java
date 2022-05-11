@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -65,20 +66,25 @@ public class SendMeetingData extends HttpServlet {
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm"); 
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		/*User user = new User();
-		user.setID(1);
-		user.setUserName("Ale");*/ //FOR TESTING PURPOSES LINES 70, 71, 72 AND COMMENT LINES 68, 69
 		String path = "/WEB-INF/selectParticipants.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
-		meeting.setTitle(request.getParameter("title"));
 		try {
 			meeting.setDate(formatter.parse(request.getParameter("date")));
+			Date currentDate = new Date(); //Get today's date
+			if(meeting.getDate().getTime() < currentDate.getTime()) { //If today's date (in ms) is greater than the meeting date 
+				ctx.setVariable("errorDate", "You can't create a meeting in the past! Please select a valid date");
+				path = getServletContext().getContextPath() + "/HomePage";
+				response.sendRedirect(path);
+				return; 
+				
+			}
 		} catch (ParseException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error while parsing the date");
 			return;
 		}
+		meeting.setTitle(request.getParameter("title"));
 		meeting.setDuration(Integer.parseInt(request.getParameter("duration")));
 		meeting.setOrganizerId(user.getID());
 		meeting.setOrganizerName(user.getUserName());

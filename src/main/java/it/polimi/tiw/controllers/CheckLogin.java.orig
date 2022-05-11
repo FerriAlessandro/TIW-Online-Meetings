@@ -36,6 +36,10 @@ public class CheckLogin extends HttpServlet{
 		this.connection = ConnectionHandler.getConnection(servletContext);
 	}
 	
+<<<<<<< HEAD
+	public void doPost()
+	
+=======
 	public void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		UserDAO userDAO = new UserDAO(connection);
@@ -72,13 +76,5 @@ public class CheckLogin extends HttpServlet{
 			response.sendRedirect(path);
 		}
 	}
-	
-	public void destroy() {
-		try {
-			ConnectionHandler.closeConnection(connection);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
+>>>>>>> 596ab2cae8e08d09547089e47b3b3a2b0197ff31
 }

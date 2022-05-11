@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>Your Personal Meeting Agenda</h1>
-	<p th:text="${'Welcome back' + session.user.username + '!'}">Welcome back guest!</p>
+	<p th:text="${'Welcome back ' + session.user.username + '!'}">Welcome back guest!</p>
 	<div th:if="${userMeetings.size() > 0}">
 	<p>This is a list of the meetings organized by you: </p>
 		<table>
@@ -22,8 +22,8 @@
 			<tbody>
 				<tr th:each="m : ${userMeetings}">
 					<td th:text="${m.title}"></td>
-					<td th:text="${m.meetingDate}"></td>
-					<td th:text="${m.meetingDuration}"></td>
+					<td th:text="${m.getDate}"></td>
+					<td th:text="${m.getDuration} + ' minutes'"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -52,7 +52,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div th:if="${userMeetings.size() == 0}"> You were not invited to any meeting yet</div>
+	<div th:if="${userInvitations.size() == 0}"> You were not invited to any meeting yet</div>
 	<div>
 		<p>Complete the form below to create a new meeting</p>
 		<form action="#" th:action="@{/SendMeetingData}" method="post">
@@ -68,6 +68,7 @@
 				<p>
 					Duration (in minutes): <input type="number" name="duration" required />
 				</p>
+				<p th:text="${errorDate}"></p><!-- if an error occurred -->
 				<input type="submit" value="Submit">
 				</fieldset>
 		</form>
