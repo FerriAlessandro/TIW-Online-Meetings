@@ -86,6 +86,7 @@ public class UserDAO{
 											  //from the list of possible users to invite
 		
 		preparedStatement.setInt(1, id);
+		
 		queryResult = preparedStatement.executeQuery();
 
 			

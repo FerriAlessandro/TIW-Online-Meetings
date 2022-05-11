@@ -3,6 +3,7 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,17 +17,20 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.DAO.UserDAO;
+import it.polimi.tiw.DAO.MeetingDAO;
+import it.polimi.tiw.beans.Meeting;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.utils.ConnectionHandler;
 
-@WebServlet("/Login")
-public class CheckLogin extends HttpServlet{
+@WebServlet("/HomePage")
+
+public class GoToHomePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection = null;
-
-	public void init() throws ServletException{
+	
+	
+	public void init()throws ServletException{
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -36,43 +40,29 @@ public class CheckLogin extends HttpServlet{
 		this.connection = ConnectionHandler.getConnection(servletContext);
 	}
 	
-	public void doPost(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
-		UserDAO userDAO = new UserDAO(connection);
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		User user;
-		String path;
+	public void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		
-		if(username == null || username.isEmpty() || password == null || password.isEmpty()) {
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("loginErrorMsg", "Empty fields. Please fill out the fields before submitting");
-			path = "/index.html";
-			templateEngine.process(path, ctx, response.getWriter());
-			return;
-		}
-		
+		User currentUser = (User)request.getSession().getAttribute("user");
+		MeetingDAO meetingDAO = new MeetingDAO(connection);
 		try {
-			user = userDAO.checkCredentials(username, password);
-		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error");
+			List<Meeting> userMeetings = meetingDAO.getMeetingsByOwner(currentUser);
+			List<Meeting> userInvitations = meetingDAO.GetUserInvitations(currentUser);
+		
+			String path = "/WEB-INF/home.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("userMeetings", userMeetings);
+			ctx.setVariable("userInvitations", userInvitations);
+			templateEngine.process(path, ctx, response.getWriter());
+		}catch(SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal DataBase Error");
 			return;
 		}
 		
-		if (user == null) {
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("loginErrorMsg", "Incorrect username or password");
-			path = "/index.html";
-			templateEngine.process(path, ctx, response.getWriter());
-			return;
-		} else {
-			request.getSession().setAttribute("user", user);
-			path = getServletContext().getContextPath() + "/HomePage";
-			response.sendRedirect(path);
-			return;
-		}
+	}
+	
+	public void DoPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+		doGet(request, response);
 	}
 	
 	public void destroy() {
@@ -83,5 +73,4 @@ public class CheckLogin extends HttpServlet{
 		}
 	}
 	
-
 }

@@ -36,10 +36,9 @@ public class MeetingDAO{
 			long duration_in_mills = resultSet.getLong("minutes"); // get duration in milliseconds from the DB
 			Date currentDate = new Date();
 			long current_time_in_mills = currentDate.getTime();
-
 			// if the meeting end time is greater than the current time, show the meeting
 			if (date_in_mills + duration_in_mills >= current_time_in_mills) {
-
+	
 				Meeting tmp = new Meeting();
 
 				tmp.setTitle(resultSet.getString("title"));
@@ -49,7 +48,7 @@ public class MeetingDAO{
 				meetings.add(tmp);
 			}
 		}
-		
+
 		return meetings;
 
 	}
@@ -67,9 +66,11 @@ public class MeetingDAO{
 		preparedStatement.setInt(1, id);
 		resultSet = preparedStatement.executeQuery();
 
+
 		while (resultSet.next()) {
 
 			long date_in_mills = resultSet.getLong("meeting_date"); // get date in milliseconds from the DB
+		
 			long duration_in_mills = resultSet.getLong("minutes"); // get duration in milliseconds from the DB
 			Date currentDate = new Date();
 			long current_time_in_mills = currentDate.getTime();
@@ -89,6 +90,7 @@ public class MeetingDAO{
 				meetings.add(tmp);
 			}
 		}
+		
 		return meetings;
 
 	}
@@ -113,9 +115,9 @@ public class MeetingDAO{
 			meetingPreparedStatement = connection.prepareStatement(addMeetingQuery);
 			meetingPreparedStatement.setInt(1, id_organizer);
 			meetingPreparedStatement.setString(2, title);
-			meetingPreparedStatement.setLong(3, date.getTime());
-			meetingPreparedStatement.setLong(4, duration);
-			meetingPreparedStatement.executeQuery();
+			meetingPreparedStatement.setLong(3, date.getTime()); //date in ms
+			meetingPreparedStatement.setLong(4, duration*6000); //duration in milliseconds
+			meetingPreparedStatement.executeUpdate();
 			
 			meetingIdPreparedStatement = connection.prepareStatement(getMeetingIdQuery);
 			meetingIdResultSet = meetingIdPreparedStatement.executeQuery();

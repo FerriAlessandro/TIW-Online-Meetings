@@ -28,10 +28,7 @@ public class Dummy extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
-	
-	public Dummy () {
-		super();
-	}
+
 	public void init() {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
