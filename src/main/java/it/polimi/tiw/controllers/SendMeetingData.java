@@ -74,7 +74,7 @@ public class SendMeetingData extends HttpServlet {
 			meeting.setDate(formatter.parse(request.getParameter("date")));
 			Date currentDate = new Date(); //Get today's date
 			if(meeting.getDate().getTime() < currentDate.getTime()) { //If today's date (in ms) is greater than the meeting date 
-				ctx.setVariable("errorDate", "You can't create a meeting in the past! Please select a valid date");
+				//ctx.setVariable("errorDate", "You can't create a meeting in the past! Please select a valid date");
 				path = getServletContext().getContextPath() + "/HomePage";
 				response.sendRedirect(path);
 				return; 
@@ -92,6 +92,7 @@ public class SendMeetingData extends HttpServlet {
 		try {
 			users = userDao.GetRegisteredUsers(user);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error");
 			return;
 		}
