@@ -53,7 +53,6 @@
 		</table>
 	</div>
 	<div th:if="${userMeetings.size() == 0}"> You were not invited to any meeting yet</div>
-	
 	<div>
 		<p>Complete the form below to create a new meeting</p>
 		<form action="#" th:action="@{/SendMeetingData}" method="post">
@@ -62,8 +61,8 @@
 					Title: <input type="text" name="title" required />
 				</p>
 				<p>
-					Date and starting time: <input type="datetime-local" name="date" required 
-						th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-ddThh:mm')}"
+					Date and starting time: <input type="datetime-local" name="date"
+						th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}"
 						placeholder="yyyy-MM-dd" required/>
 				</p>
 				<p>

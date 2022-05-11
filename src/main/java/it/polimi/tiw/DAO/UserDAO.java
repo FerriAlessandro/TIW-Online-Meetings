@@ -91,21 +91,16 @@ public class UserDAO{
 		
 		preparedStatement.setInt(1, id);
 		queryResult = preparedStatement.executeQuery();
-		
-		if(!queryResult.isBeforeFirst()) //If zero users are registered 
-			return null;
-		
-		else {
+
 			
-			while(queryResult.next()) {
+		while(queryResult.next()) {
 				
-				User tmp = new User();
-				tmp.setID(queryResult.getInt("id"));
-				tmp.setUserName(queryResult.getString("username"));
-				users.add(tmp);
-			}
-			return users;
+			User tmp = new User();
+			tmp.setID(queryResult.getInt("id"));
+			tmp.setUserName(queryResult.getString("username"));
+			users.add(tmp);
 		}
+		return users;
 	}
 	
 }

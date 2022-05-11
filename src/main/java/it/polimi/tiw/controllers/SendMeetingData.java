@@ -46,7 +46,7 @@ public class SendMeetingData extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		this.connection = ConnectionHandler.getConnection(getServletContext());
+		this.connection = ConnectionHandler.getConnection(servletContext);
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -67,6 +67,9 @@ public class SendMeetingData extends HttpServlet {
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm"); 
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
+		/*User user = new User();
+		user.setID(1);
+		user.setUserName("Ale");*/ //FOR TESTING PURPOSES LINES 70, 71, 72 AND COMMENT LINES 68, 69
 		String path = "/WEB-INF/selectParticipants.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
