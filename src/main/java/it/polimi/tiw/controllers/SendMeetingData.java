@@ -35,9 +35,7 @@ public class SendMeetingData extends HttpServlet {
 	private TemplateEngine templateEngine;
 	private Connection connection = null;
 	
-	public SendMeetingData() {
-		super();
-	}
+
 	
 	public void init() throws ServletException{
 		ServletContext servletContext = getServletContext();

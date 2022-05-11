@@ -21,7 +21,7 @@ public class UserDAO{
 		
 		PreparedStatement preparedStatement;
 		ResultSet queryResult;
-		String query = "SELECT id, username FROM user WHERE username = ? AND password = ?";
+		String query = "SELECT id, username FROM user WHERE username = ? AND psw = ?";
 		preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setString(1, userName);
 		preparedStatement.setString(2, password);
