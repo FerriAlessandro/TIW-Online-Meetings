@@ -20,7 +20,7 @@ public class MeetingDAO{
 		
 	}
 	
-	public ArrayList<Meeting> getMeetingsByOwner(User user) throws SQLException{
+	public ArrayList<Meeting> getMeetingsByOwner(User user) throws SQLException {
 
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM meetings WHERE id_organizer = ?";
@@ -30,37 +30,33 @@ public class MeetingDAO{
 		preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setInt(1, id);
 		resultSet = preparedStatement.executeQuery();
-		if(!resultSet.isBeforeFirst())
-			return null;
-		else {
-			while (resultSet.next()) {
+		while (resultSet.next()) {
 
-				long date_in_mills = resultSet.getLong("meeting_date"); // get date in milliseconds from the DB
-				long duration_in_mills = resultSet.getLong("minutes"); // get duration in milliseconds from the DB
-				Date currentDate = new Date();
-				long current_time_in_mills = currentDate.getTime();
-				
-				//if the meeting end time is greater than the current time, show the meeting
-				if (date_in_mills + duration_in_mills >= current_time_in_mills) { 
-					
-					Meeting tmp = new Meeting();
+			long date_in_mills = resultSet.getLong("meeting_date"); // get date in milliseconds from the DB
+			long duration_in_mills = resultSet.getLong("minutes"); // get duration in milliseconds from the DB
+			Date currentDate = new Date();
+			long current_time_in_mills = currentDate.getTime();
 
-					tmp.setTitle(resultSet.getString("title"));
-					tmp.setDate(new Date(date_in_mills)); // Create a new Date from the milliseconds
-					tmp.setDuration((int) (duration_in_mills / (1000 * 60))); // create a new int from the milliseconds
-					tmp.setID(resultSet.getInt("id"));
-					meetings.add(tmp);
-				}
+			// if the meeting end time is greater than the current time, show the meeting
+			if (date_in_mills + duration_in_mills >= current_time_in_mills) {
+
+				Meeting tmp = new Meeting();
+
+				tmp.setTitle(resultSet.getString("title"));
+				tmp.setDate(new Date(date_in_mills)); // Create a new Date from the milliseconds
+				tmp.setDuration((int) (duration_in_mills / (1000 * 60))); // create a new int from the milliseconds
+				tmp.setID(resultSet.getInt("id"));
+				meetings.add(tmp);
 			}
-			//TODO check on servlet side if the list is empty
-			return meetings;
 		}
+		
+		return meetings;
 
 	}
 	
 	
-	public ArrayList<Meeting> GetUserInvitations(User user)throws SQLException{
-		
+	public ArrayList<Meeting> GetUserInvitations(User user) throws SQLException {
+
 		PreparedStatement preparedStatement;
 		ResultSet resultSet;
 		ArrayList<Meeting> meetings = new ArrayList<>();
@@ -68,40 +64,36 @@ public class MeetingDAO{
 		String query = "Select meetings.id, meetings.title, meetings.meeting_date, meetings.minutes,"
 				+ "meetings.id_organizer, user.username "
 				+ "FROM meetings JOIN invitations ON meetings.id = invitations.id_meeting"
-				+ "JOIN user ON meetings.id_organizer = user.id"
-				+ "WHERE invitations.id_user = ?";
+				+ "JOIN user ON meetings.id_organizer = user.id" + "WHERE invitations.id_user = ?";
 		int id = user.getID();
 		preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setInt(1, id);
 		resultSet = preparedStatement.executeQuery();
-		if(!resultSet.isBeforeFirst())
-			return null; 
-		else {
-			while (resultSet.next()) {
 
-				long date_in_mills = resultSet.getLong("meeting_date"); // get date in milliseconds from the DB
-				long duration_in_mills = resultSet.getLong("minutes"); // get duration in milliseconds from the DB
-				Date currentDate = new Date();
-				long current_time_in_mills = currentDate.getTime();
+		while (resultSet.next()) {
 
-				// if the meeting end time is greater than the current time, show the meeting
-				if (date_in_mills + duration_in_mills >= current_time_in_mills) {
-					
-					Meeting tmp = new Meeting();
-					
-					tmp.setTitle(resultSet.getString("title"));
-					tmp.setDate(new Date(date_in_mills)); // Create a new Date from the milliseconds
-					tmp.setDuration((int) (duration_in_mills / (1000 * 60))); // create a new int from the milliseconds
-					tmp.setID(resultSet.getInt("id"));
-					tmp.setOrganizerName(resultSet.getString("username"));
-					tmp.setOrganizerId(resultSet.getInt("id_organizer"));
+			long date_in_mills = resultSet.getLong("meeting_date"); // get date in milliseconds from the DB
+			long duration_in_mills = resultSet.getLong("minutes"); // get duration in milliseconds from the DB
+			Date currentDate = new Date();
+			long current_time_in_mills = currentDate.getTime();
 
-					meetings.add(tmp);
-				}
+			// if the meeting end time is greater than the current time, show the meeting
+			if (date_in_mills + duration_in_mills >= current_time_in_mills) {
+
+				Meeting tmp = new Meeting();
+
+				tmp.setTitle(resultSet.getString("title"));
+				tmp.setDate(new Date(date_in_mills)); // Create a new Date from the milliseconds
+				tmp.setDuration((int) (duration_in_mills / (1000 * 60))); // create a new int from the milliseconds
+				tmp.setID(resultSet.getInt("id"));
+				tmp.setOrganizerName(resultSet.getString("username"));
+				tmp.setOrganizerId(resultSet.getInt("id_organizer"));
+
+				meetings.add(tmp);
 			}
-			return meetings;
 		}
-		
+		return meetings;
+
 	}
 	
 	public void createMeeting(List<User> guests, Meeting meeting) throws SQLException {
