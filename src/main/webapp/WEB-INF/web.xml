@@ -11,7 +11,7 @@
   </context-param>
   <context-param>
     <param-name>dbPassword</param-name>
-    <param-value>password</param-value>
+    <param-value>MARIAconte123!</param-value>
   </context-param>
   <context-param>
     <param-name>dbDriver</param-name>

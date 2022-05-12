@@ -46,7 +46,7 @@
 				<tr th:each="i : ${userInvitations}">
 					<td th:text="${i.title}"></td>
 					<td th:text="${i.meetingDate}"></td>
-					<td th:text="${i.meetingDuration}"></td>
+					<td th:text="${i.meetingDuration + ' minutes'}"></td>
 					<td th:text="${i.organizerName}"></td>
 				</tr>
 			</tbody>
