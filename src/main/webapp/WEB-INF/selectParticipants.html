@@ -13,15 +13,15 @@
 					<h3>Registered users:</h3>
 					<p th:each="u : ${users}">
 						<input type="checkbox" name="user_id" th:value="${u.getID()}" th:checked="${selectedUsers.contains(u.getID())}"/>
-						<label th:text="${u.getUsername()}">Ale</label>
+						<label th:text="${u.getUserName()}">Ale</label>
 					</p>
 					<p>
 						<input type="hidden" name="title" th:value="${meeting.title}"/>
 						<input type="hidden" name="organizerId" th:value="${meeting.getOrganizerId()}"/>
 						<input type="hidden" name="organizerName" th:value="${meeting.getOrganizerName()}"/>
-						<input type="hidden" name="date" th:value="meeting.getDate()"/>
+						<input type="hidden" name="date" th:value="${meeting.getDate()}"/>
 						<input type="hidden" name="duration" th:value="${meeting.getDuration()}"/>
-						<input type="hidden" name="attemptCounter" th:value="$attempts"/> <!-- Number of meeting creation attempts -->
+						<input type="hidden" name="attemptCounter" th:value="${attempts}"/> <!-- Number of meeting creation attempts -->
 					</p>
 					<input type="submit" value="Submit">
 				</div>
