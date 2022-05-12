@@ -70,24 +70,30 @@ public class SendMeetingData extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
+		
+		String title = request.getParameter("title");
+		int duration = Integer.parseInt(request.getParameter("duration"));
+
+		meeting.setTitle(title);
+		meeting.setDuration(duration);
+		
 		try {
 			meeting.setDate(formatter.parse(request.getParameter("date")));
-			Date currentDate = new Date(); //Get today's date
-			if(meeting.getDate().getTime() < currentDate.getTime()) { //If today's date (in ms) is greater than the meeting date 
-				//ctx.setVariable("errorDate", "You can't create a meeting in the past! Please select a valid date");
-				path = getServletContext().getContextPath() + "/HomePage";
-				response.sendRedirect(path);
-				return; 
-				
-			}
-		} catch (ParseException e) {
+		}catch(ParseException e ) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error while parsing the date");
 			return;
 		}
-		meeting.setTitle(request.getParameter("title"));
-		meeting.setDuration(Integer.parseInt(request.getParameter("duration")));
+
 		meeting.setOrganizerId(user.getID());
 		meeting.setOrganizerName(user.getUserName());
+		Date currentDate = new Date(); //Get today's date
+		//If today's date is greater than the meeting date or if the parameters are not valid
+		if(meeting.getDate().getTime() < currentDate.getTime() || title.length()==0 || title == null|| duration <= 0 || meeting.getDate() == null){ 
+			path = getServletContext().getContextPath() + "/HomePage";
+			response.sendRedirect(path);
+			return; 
+				
+			}
 		
 		try {
 			users = userDao.GetRegisteredUsers(user);
