@@ -48,8 +48,8 @@
 			<tbody>
 				<tr th:each="i : ${userInvitations}">
 					<td th:text="${i.title}"></td>
-					<td th:text="${i.meetingDate}"></td>
-					<td th:text="${i.meetingDuration + ' minutes'}"></td>
+					<td th:text="${i.getDate}"></td>
+					<td th:text="${i.getDuration} + ' minutes'"></td>
 					<td th:text="${i.organizerName}"></td>
 				</tr>
 			</tbody>
