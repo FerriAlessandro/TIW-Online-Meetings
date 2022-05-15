@@ -45,8 +45,8 @@
 			<tbody>
 				<tr th:each="i : ${userInvitations}">
 					<td th:text="${i.title}"></td>
-					<td th:text="${i.meetingDate}"></td>
-					<td th:text="${i.meetingDuration + ' minutes'}"></td>
+					<td th:text="${i.getDate}"></td>
+					<td th:text="${i.getDuration} + ' minutes'"></td>
 					<td th:text="${i.organizerName}"></td>
 				</tr>
 			</tbody>
@@ -62,13 +62,11 @@
 				</p>
 				<p>
 					Date and starting time: <input type="datetime-local" name="date"
-						th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}"
-						placeholder="yyyy-MM-dd" required/>
+						th:attr="min=${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}" required/>
 				</p>
 				<p>
 					Duration (in minutes): <input type="number" name="duration" required />
 				</p>
-				<p th:text="${errorDate}"></p><!-- if an error occurred -->
 				<input type="submit" value="Submit">
 				</fieldset>
 		</form>

@@ -12,7 +12,7 @@
 				<div th:if="${users.size() > 0}">
 					<h3>Registered users:</h3>
 					<p th:each="u : ${users}">
-						<input type="checkbox" name="user_id" th:value="${u.getID()}" th:checked="${selectedUsers.contains(u.getID())}"/>
+						<input type="checkbox" name="user_id" th:value="${u.getID()}" th:checked="${selectedUsersID.contains(u.getID())}"/>
 						<label th:text="${u.getUserName()}">Ale</label>
 					</p>
 					<p>
@@ -24,6 +24,7 @@
 						<input type="hidden" name="attemptCounter" th:value="${attempts}"/> <!-- Number of meeting creation attempts -->
 					</p>
 					<input type="submit" value="Submit">
+					<p th:text="${errorMsg}"></p>
 				</div>
 				<div th:if="${users.size() == 0}">
 					<p>No users registered</p>
