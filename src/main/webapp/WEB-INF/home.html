@@ -7,6 +7,9 @@
 	href="../css/style.css" th:href="@{/css/style.css}"/>
 </head>
 <body>
+	<div align="right">
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
 	<h1>Your Personal Meeting Agenda</h1>
 	<p th:text="${'Welcome back ' + session.user.username + '!'}">Welcome back guest!</p>
 	<div th:if="${userMeetings.size() > 0}">

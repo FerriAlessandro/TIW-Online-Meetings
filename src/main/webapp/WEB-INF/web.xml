@@ -20,8 +20,12 @@
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
+<<<<<<< HEAD
    <filter> 
       <filter-name>LoginFilter</filter-name>
       <filter-class>it.polimi.tiw.filters.LoginFilter</filter-class> 
  </filter> 
 </web-app>
+=======
+</web-app>
+>>>>>>> b809e7dc2417cded41be76b7f41ae8831842eed2

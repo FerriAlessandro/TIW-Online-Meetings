@@ -80,7 +80,7 @@ public class MeetingDAO{
 
 				Meeting tmp = new Meeting();
 
-				tmp.setTitle(resultSet.getString("title"));
+				tmp.setTitle(resultSet.getString("title"));	
 				tmp.setDate(new Date(date_in_mills)); // Create a new Date from the milliseconds
 				tmp.setDuration((int) (duration_in_mills / (1000 * 60))); // create a new int from the milliseconds
 				tmp.setID(resultSet.getInt("id"));
