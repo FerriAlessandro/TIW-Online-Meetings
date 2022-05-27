@@ -59,7 +59,7 @@ public class SendMeetingData extends HttpServlet {
 			throws ServletException, IOException {
 		
 		int attempts = 0;
-		List<User> selectedUsers = new ArrayList<>(); //Empty arrayList for the first time the form is sent to the user
+		List<Integer> selectedUsersID = new ArrayList<>(); //Empty arrayList for the first time the form is sent to the user
 		List<User> users = new ArrayList<>();
 		Meeting meeting = new Meeting();
 		UserDAO userDao = new UserDAO(connection);
@@ -69,18 +69,25 @@ public class SendMeetingData extends HttpServlet {
 		String path = "/WEB-INF/selectParticipants.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		
-		
 		String title = request.getParameter("title");
+		
+		//We use the sendError method since we're in the SendMeetingData Servlet and we can't redirect to Home with an error String to show
+		//We check the duration here since we need to parse it later, if we don't the parseInt method throws an exception
+		if(request.getParameter("duration").length() == 0 || request.getParameter("duration") == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Meeting duration! Please insert a valid number");
+			return;
+		}
 		int duration = Integer.parseInt(request.getParameter("duration"));
 
 		meeting.setTitle(title);
 		meeting.setDuration(duration);
 		
 		try {
+
 			meeting.setDate(formatter.parse(request.getParameter("date")));
+	
 		}catch(ParseException e ) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error while parsing the date");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Date!");
 			return;
 		}
 
@@ -88,12 +95,21 @@ public class SendMeetingData extends HttpServlet {
 		meeting.setOrganizerName(user.getUserName());
 		Date currentDate = new Date(); //Get today's date
 		//If today's date is greater than the meeting date or if the parameters are not valid
-		if(meeting.getDate().getTime() < currentDate.getTime() || title.length()==0 || title == null|| duration <= 0 || meeting.getDate() == null){ 
-			path = getServletContext().getContextPath() + "/HomePage";
-			response.sendRedirect(path);
-			return; 
-				
-			}
+		if(meeting.getDate().getTime() < currentDate.getTime()){ 
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "You can't create a Meeting in the past! Please select a valid date");
+			return;
+		}
+		
+		if(title.length()==0 || title == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Empty Title field! Please insert a Title");
+			return;
+		}
+		
+		if(duration <= 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Duration! Please insert a valid number");
+			return;
+		}
+		
 		
 		try {
 			users = userDao.GetRegisteredUsers(user);
@@ -104,7 +120,7 @@ public class SendMeetingData extends HttpServlet {
 		}
 		
 		ctx.setVariable("users", users);
-		ctx.setVariable("selectedUsers", selectedUsers);
+		ctx.setVariable("selectedUsersID", selectedUsersID);
 		ctx.setVariable("attempts", attempts);
 		ctx.setVariable("meeting", meeting);
 		templateEngine.process(path, ctx, response.getWriter());

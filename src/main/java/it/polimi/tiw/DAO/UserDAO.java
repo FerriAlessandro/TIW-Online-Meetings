@@ -46,7 +46,6 @@ public class UserDAO{
 		
 		PreparedStatement preparedStatement, registrationPreparedStatement;
 		ResultSet queryResult;
-		User user;
 		
 		String checkQuery = "SELECT id FROM user WHERE username = ? OR email = ?"; //if someone is already registered with the same username or email
 																			       //this query will return a result

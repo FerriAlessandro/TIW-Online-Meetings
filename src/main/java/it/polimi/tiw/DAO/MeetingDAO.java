@@ -95,7 +95,7 @@ public class MeetingDAO{
 
 	}
 	
-	public void createMeeting(List<User> guests, Meeting meeting) throws SQLException {
+	public void createMeeting(List<Integer> guests, Meeting meeting) throws SQLException {
 		PreparedStatement meetingPreparedStatement;
 		PreparedStatement invitationPreparedStatement;
 		PreparedStatement meetingIdPreparedStatement;
@@ -116,7 +116,7 @@ public class MeetingDAO{
 			meetingPreparedStatement.setInt(1, id_organizer);
 			meetingPreparedStatement.setString(2, title);
 			meetingPreparedStatement.setLong(3, date.getTime()); //date in ms
-			meetingPreparedStatement.setLong(4, duration*6000); //duration in milliseconds
+			meetingPreparedStatement.setLong(4, duration*60000); //duration in milliseconds
 			meetingPreparedStatement.executeUpdate();
 			
 			meetingIdPreparedStatement = connection.prepareStatement(getMeetingIdQuery);
@@ -127,13 +127,13 @@ public class MeetingDAO{
 			
 			else {
 				meetingIdResultSet.next();
-				meetingID = meetingIdResultSet.getInt("id");
+				meetingID = meetingIdResultSet.getInt("max(id)");
 			}
 			
 			invitationPreparedStatement = connection.prepareStatement(addInvitationQuery);
 			
-			for (User user : guests) {
-				invitationPreparedStatement.setInt(1,user.getID());
+			for (Integer userID : guests) {
+				invitationPreparedStatement.setInt(1,userID);
 				invitationPreparedStatement.setInt(2,meetingID);
 				invitationPreparedStatement.addBatch();
 			}	
