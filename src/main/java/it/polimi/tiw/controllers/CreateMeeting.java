@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -58,43 +57,42 @@ public class CreateMeeting extends HttpServlet{
 		String path = "/WEB-INF/selectParticipants.html";
 		int attempts = Integer.parseInt(request.getParameter("attemptCounter"));
 		
+		
 		Meeting meeting = new Meeting();
-		SimpleDateFormat formatter=new SimpleDateFormat("E MMM d HH:mm:ss Z yyyy", Locale.ENGLISH);
-		
-		
-		if(request.getParameter("duration").length() == 0 || request.getParameter("duration") == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Meeting duration! Please insert a valid number");
-			return;
-		}
-		
+		SimpleDateFormat formatter=new SimpleDateFormat("E MMM d HH:mm:ss Z yyyy");
 		meeting.setTitle(request.getParameter("title"));
-		meeting.setOrganizerId(user.getID());
+		meeting.setOrganizerId(Integer.parseInt(request.getParameter("organizerId")));
 		meeting.setDuration(Integer.parseInt(request.getParameter("duration")));
-		meeting.setOrganizerName(user.getUserName());
+		meeting.setOrganizerName(request.getParameter("organizerName"));
 		try {
 			meeting.setDate(formatter.parse(request.getParameter("date")));
 		}catch(ParseException e ) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Date!");
 			return;
 		}
-		
-		Date currentDate = new Date(); //Get today's date
-		//If today's date is greater than the meeting date or if the parameters are not valid
-		if(meeting.getDate().getTime() < currentDate.getTime()){ 
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "You can't create a Meeting in the past! Please select a valid date");
+		//If someone is trying to create a meeting with someone else's ID or username
+		if(!meeting.getOrganizerName().equals(user.getUserName()) || meeting.getOrganizerId() != user.getID()) {
+			UserDAO userDAO = new UserDAO(connection);
+			try {
+				registeredUsers = userDAO.GetRegisteredUsers(user);
+			} catch (SQLException e) {
+				
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Interal Database Error!");
+				e.printStackTrace();
+				return;
+			}
+			//We set the right parameters for organizer name and organizer id
+			meeting.setOrganizerName(user.getUserName());
+			meeting.setOrganizerId(user.getID());
+			
+			ctx.setVariable("users", registeredUsers);
+			ctx.setVariable("selectedUsersID", selectedUsersID);
+			ctx.setVariable("attempts", attempts);
+			ctx.setVariable("meeting", meeting);
+			ctx.setVariable("errorMsg", "You can't create a meeting using someone else's name");
+			templateEngine.process(path, ctx, response.getWriter());
 			return;
 		}
-		
-		if(meeting.getTitle().length()==0 || meeting.getTitle() == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Empty Title field! Please insert a Title");
-			return;
-		}
-		
-		if(meeting.getDuration() <= 0) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Duration! Please insert a valid number");
-			return;
-		}
-		
 			
 		
 		//IF THE USER DIDNT SELECT ANY PARTICIPANT
@@ -148,7 +146,7 @@ public class CreateMeeting extends HttpServlet{
 		//if the number of selected users is not valid
 		else {
 			attempts +=1;
-			if(attempts >= 3) {
+			if(attempts == 3) {
 				path = "/WEB-INF/cancellation.html";
 				templateEngine.process(path, ctx, response.getWriter());
 				return;
