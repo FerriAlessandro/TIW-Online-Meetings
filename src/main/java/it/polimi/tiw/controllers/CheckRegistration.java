@@ -94,7 +94,7 @@ public class CheckRegistration extends HttpServlet {
 			try {
 				user = userDAO.checkCredentials(username, password);
 			} catch (SQLException e) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error2");
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error");
 				return;
 			}
 			request.getSession().setAttribute("user", user);
