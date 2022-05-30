@@ -11,21 +11,25 @@
 		  value: the value of the field (the name 'submit' on the button or a default 'username' 
 		  that appears before the user compiles the field  -->
 	<form action="Registration" method="post">
-		Username: <input type="text" name="username" required> <br> <br>
-		Password: <input type="password" name="password" required> <br> <br>
-		Repeat Password: <input type="password" name="repeat_password"required> <br> <br>
-		E-mail: <input type="email" name="email"required> <br> <br>
-		<input type="submit" value="Register"> <br>
-		<p th:text=" ${registrationErrorMsg}"></p><!-- if an error occurred -->
+		<fieldset>
+			Username: <input type="text" name="username" required> <br> <br>
+			Password: <input type="password" name="password" required> <br> <br>
+			Repeat Password: <input type="password" name="repeat_password"required> <br> <br>
+			E-mail: <input type="email" name="email"required> <br> <br>
+			<input type="submit" value="Register"> <br>
+			<p th:text=" ${registrationErrorMsg}"></p><!-- if an error occurred -->
+		</fieldset>
 	</form>
 		<br>
 		<br> 
 		<br>
 		<form action="Login" method="post">
-		Username: <input type="text" name="username" required> <br> <br>
-		Password: <input type="password" name="password" required> <br> <br>
-		<input type="submit" value="Login"> <br>
-		<p th:text=" ${loginErrorMsg}"></p><!-- if an error occurred -->
+		<fieldset>
+			Username: <input type="text" name="username" required> <br> <br>
+			Password: <input type="password" name="password" required> <br> <br>
+			<input type="submit" value="Login"> <br>
+			<p th:text=" ${loginErrorMsg}"></p><!-- if an error occurred -->
+		</fieldset>
 	</form>
 
 
