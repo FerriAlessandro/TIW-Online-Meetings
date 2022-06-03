@@ -47,6 +47,7 @@ public class GoToHomePage extends HttpServlet {
 		try {
 			List<Meeting> userMeetings = meetingDAO.getMeetingsByOwner(currentUser);
 			List<Meeting> userInvitations = meetingDAO.GetUserInvitations(currentUser);
+			
 		
 			String path = "/WEB-INF/home.html";
 			ServletContext servletContext = getServletContext();

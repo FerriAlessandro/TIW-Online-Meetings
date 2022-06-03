@@ -18,6 +18,8 @@ public class Meeting{
 		this.title = title;
 		this.meetingDate = date;
 		this.meetingDuration = duration;
+		
+		
 	}
 	
 	public Meeting() {
