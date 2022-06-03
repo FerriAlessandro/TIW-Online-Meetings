@@ -1,3 +1,12 @@
-table,th,tr{
+.notBoxed{
+	border:none;
+}
+.boxed{
 	border: 1px solid black;
+}
+th,tr{
+	border: 1px solid black;
+}
+#invitationsTable{
+	margin-left: 50px;
 }
