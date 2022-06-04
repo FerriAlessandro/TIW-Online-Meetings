@@ -12,70 +12,81 @@
 	</div>
 	<h1>Your Personal Meeting Agenda</h1>
 	<p th:text="${'Welcome back ' + session.user.username + '!'}">Welcome back guest!</p>
-	<div th:if="${userMeetings.size() > 0}">
-	<p>This is a list of the meetings organized by you: </p>
-		<table>
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Date and time</th>
-					<th>Duration</th>
-				</tr>	
-			</thead>
-			<tbody>
-				<tr th:each="m : ${userMeetings}">
-					<td th:text="${m.title}"></td>
-					<td th:text="${m.getDate}"></td>
-					<td th:text="${m.getDuration} + ' minutes'"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div th:if="${userMeetings.size() == 0}"> You have not organized any meeting yet </div>
+	<table>
+		<tr class = "notBoxed">
+			<td class="notBoxed">
+				<div th:if="${userMeetings.size() > 0}">
+				<p>This is a list of the meetings organized by you: </p>
+				<table>
+					<thead>
+						<tr>
+							<th>Title</th>
+							<th>Date and time</th>
+							<th>Duration</th>
+						</tr>	
+					</thead>
+					<tbody>
+						<tr th:each="m : ${userMeetings}">
+							<td style="border:1px solid black" th:text="${m.title}"></td>
+							<td style="border:1px solid black" th:text="${m.getDate}"></td>
+							<td style="border:1px solid black" th:text="${m.getDuration} + ' minutes'"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div th:if="${userMeetings.size() == 0}"> You have not organized any meeting yet </div>
+			</td>
 	
-	
-	<div th:if="${userInvitations.size() > 0}">
-	<p>This is a list of the meetings you were invited to: </p>
-		<table>
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Date and time</th>
-					<th>Duration</th>
-					<th>Organizer</th>
-				</tr>	
-			</thead>
-			<tbody>
-				<tr th:each="i : ${userInvitations}">
-					<td th:text="${i.title}"></td>
-					<td th:text="${i.getDate}"></td>
-					<td th:text="${i.getDuration} + ' minutes'"></td>
-					<td th:text="${i.organizerName}"></td>
+			<td class="notBoxed">
+				<div id="invitationsTable" th:if="${userInvitations.size() > 0}">
+				<p>This is a list of the meetings you were invited to: </p>
+					<table>
+						<thead>
+							<tr>
+								<th>Title</th>
+								<th>Date and time</th>
+								<th>Duration</th>
+								<th>Organizer</th>
+							</tr>	
+						</thead>
+						<tbody>
+							<tr th:each="i : ${userInvitations}">
+								<td style="border:1px solid black" th:text="${i.title}"></td>
+								<td style="border:1px solid black" th:text="${i.getDate}"></td>
+								<td style="border:1px solid black" th:text="${i.getDuration} + ' minutes'"></td>
+								<td style="border:1px solid black" th:text="${i.organizerName}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div th:if="${userInvitations.size() == 0}"> You were not invited to any meeting yet</div>
+				</td>
 				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div th:if="${userInvitations.size() == 0}"> You were not invited to any meeting yet</div>
-	<div>
-		<p>Complete the form below to create a new meeting</p>
-		<form action="#" th:action="@{/SendMeetingData}" method="post">
-			<fieldset>
-				<p>
-					Title: <input type="text" name="title" required />
-				</p>
-				<p>
-					Date and starting time: <input type="datetime-local" name="date"
-						th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}"
-						placeholder="yyyy-MM-dd" required/>
-				</p>
-				<p>
-					Duration (in minutes): <input type="number" name="duration" required />
-				</p>
-				<p th:text="${errorDate}"></p><!-- if an error occurred -->
-				<input type="submit" value="Submit">
-			</fieldset>
-		</form>
-	</div>
+				<tr class="notBoxed">
+				<td class="notBoxed">
+				<div align="center">
+					<p>Complete the form below to create a new meeting</p>
+					<form action="#" th:action="@{/SendMeetingData}" method="post">
+						<fieldset>
+							<p>
+								Title: <input type="text" name="title" required />
+							</p>
+							<p>
+								Date and starting time: <input type="datetime-local" name="date"
+									th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}"
+									placeholder="yyyy-MM-dd" required/>
+							</p>
+							<p>
+								Duration (in minutes): <input type="number" name="duration" required />
+							</p>
+							<p th:text="${errorDate}"></p><!-- if an error occurred -->
+							<input type="submit" value="Submit">
+							</fieldset>
+					</form>
+				</div>
+				</td>
+				</tr>
+				
 	
 </body>
 </html>

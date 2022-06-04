@@ -61,7 +61,6 @@ public class CreateMeeting extends HttpServlet{
 		
 		Meeting meeting = new Meeting();
 		SimpleDateFormat formatter=new SimpleDateFormat("E MMM d HH:mm:ss Z yyyy", Locale.ENGLISH);
-		
 		if(request.getParameter("duration").length() == 0 || request.getParameter("duration") == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Meeting duration! Please insert a valid number");
 			return;
