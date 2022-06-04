@@ -71,7 +71,7 @@ public class CheckRegistration extends HttpServlet {
 		
 		if (username == null || username.isEmpty() || email == null ||
 				email.isEmpty() || password == null || password.isEmpty() 
-				|| password == null || password.isEmpty()) {
+				|| repeatPassword == null || repeatPassword.isEmpty()) {
 			
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());

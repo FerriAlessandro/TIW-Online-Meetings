@@ -13,9 +13,9 @@
 	<form action="Registration" method="post">
 		<fieldset>
 			Username: <input type="text" name="username" required> <br> <br>
+			E-mail: <input type="email" name="email"required> <br> <br>
 			Password: <input type="password" name="password" required> <br> <br>
 			Repeat Password: <input type="password" name="repeat_password"required> <br> <br>
-			E-mail: <input type="email" name="email"required> <br> <br>
 			<input type="submit" value="Register"> <br>
 			<p th:text=" ${registrationErrorMsg}"></p><!-- if an error occurred -->
 		</fieldset>
