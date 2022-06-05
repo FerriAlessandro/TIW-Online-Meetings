@@ -94,7 +94,7 @@ public class CheckRegistration extends HttpServlet {
 		if (registration == true) {
 			User user;
 			try {
-				user = userDAO.checkCredentials(username, password);
+				user = userDAO.checkCredentials(username, password); //returns a user bean with ID 
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error");
 				return;

@@ -150,8 +150,8 @@ public class CreateMeeting extends HttpServlet{
 		else {
 			attempts +=1;
 			if(attempts >= 3) {
-				path = "/WEB-INF/cancellation.html";
-				templateEngine.process(path, ctx, response.getWriter());
+				path = servletContext.getContextPath()+ "/Cancellation";
+				response.sendRedirect(path);
 				return;
 			}
 			UserDAO userDAO = new UserDAO(connection);
