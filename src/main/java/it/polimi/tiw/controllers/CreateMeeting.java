@@ -66,6 +66,11 @@ public class CreateMeeting extends HttpServlet{
 			return;
 		}
 		
+		if(attempts < 0) { //If someone modified the number of attempts client-side
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number of attempts");
+			return;
+		}
+		
 		meeting.setTitle(request.getParameter("title"));
 		meeting.setOrganizerId(user.getID());
 		meeting.setDuration(Integer.parseInt(request.getParameter("duration")));
