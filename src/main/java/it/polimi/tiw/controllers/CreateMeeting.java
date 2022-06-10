@@ -56,7 +56,15 @@ public class CreateMeeting extends HttpServlet{
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		String path = "/WEB-INF/selectParticipants.html";
-		int attempts = Integer.parseInt(request.getParameter("attemptCounter"));
+		int attempts;
+		
+		//if the number of attempts is not a number
+		try {
+			attempts = Integer.parseInt(request.getParameter("attemptCounter"));
+		}catch(NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid parameter type");
+			return;
+		}
 		
 		
 		Meeting meeting = new Meeting();
@@ -73,7 +81,13 @@ public class CreateMeeting extends HttpServlet{
 		
 		meeting.setTitle(request.getParameter("title"));
 		meeting.setOrganizerId(user.getID());
-		meeting.setDuration(Integer.parseInt(request.getParameter("duration")));
+		//If the duration is not a number
+		try {
+			meeting.setDuration(Integer.parseInt(request.getParameter("duration")));
+		}catch(NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid parameter type");
+			return;
+		}
 		meeting.setOrganizerName(user.getUserName());
 		try {
 			meeting.setDate(formatter.parse(request.getParameter("date")));
@@ -128,7 +142,13 @@ public class CreateMeeting extends HttpServlet{
 		
 		for(String id : invitedUsers) {
 			User u = new User();
-			u.setID(Integer.parseInt(id));
+			//if the ID is not a number
+			try {
+				u.setID(Integer.parseInt(id));
+			}catch(NumberFormatException e) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid parameters type");
+				return; 
+			}
 			selectedUsersID.add(u.getID());
 		}
 		

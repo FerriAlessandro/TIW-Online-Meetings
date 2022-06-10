@@ -70,6 +70,7 @@ public class SendMeetingData extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		String title = request.getParameter("title");
+		int duration;
 		
 		//We use the sendError method since we're in the SendMeetingData Servlet and we can't redirect to Home with an error String to show
 		//We check the duration here since we need to parse it later, if we don't the parseInt method throws an exception
@@ -77,7 +78,12 @@ public class SendMeetingData extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Meeting duration! Please insert a valid number");
 			return;
 		}
-		int duration = Integer.parseInt(request.getParameter("duration"));
+		try {
+			 duration = Integer.parseInt(request.getParameter("duration"));
+		}catch(NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid parameter type");
+			return;
+		}
 
 		meeting.setTitle(title);
 		meeting.setDuration(duration);
