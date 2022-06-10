@@ -69,6 +69,8 @@ public class SendMeetingData extends HttpServlet {
 		String path = "/WEB-INF/selectParticipants.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
+		
 		String title = request.getParameter("title");
 		int duration;
 		
