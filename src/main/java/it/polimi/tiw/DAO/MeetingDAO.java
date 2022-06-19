@@ -23,10 +23,11 @@ public class MeetingDAO{
 	public ArrayList<Meeting> getMeetingsByOwner(User user) throws SQLException {
 
 		PreparedStatement preparedStatement;
+		ResultSet resultSet;
 		String query = "SELECT * FROM meetings WHERE id_organizer = ?";
 		int id = user.getID();
-		ResultSet resultSet;
 		ArrayList<Meeting> meetings = new ArrayList<>();
+		
 		preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setInt(1, id);
 		resultSet = preparedStatement.executeQuery();
@@ -48,8 +49,9 @@ public class MeetingDAO{
 				meetings.add(tmp);
 			}
 		}
-		preparedStatement.close();
 		resultSet.close();
+		preparedStatement.close();
+		
 
 		return meetings;
 
@@ -62,7 +64,7 @@ public class MeetingDAO{
 		ResultSet resultSet;
 		ArrayList<Meeting> meetings = new ArrayList<>();
 
-		String query = "Select meetings.id, meetings.title, meetings.meeting_date, meetings.minutes,meetings.id_organizer, user.username FROM meetings JOIN invitations ON meetings.id = invitations.id_meeting JOIN user ON meetings.id_organizer = user.id WHERE invitations.id_user = ?";
+		String query = "SELECT meetings.id, meetings.title, meetings.meeting_date, meetings.minutes,meetings.id_organizer, user.username FROM meetings JOIN invitations ON meetings.id = invitations.id_meeting JOIN user ON meetings.id_organizer = user.id WHERE invitations.id_user = ?";
 		int id = user.getID();
 		preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setInt(1, id);
@@ -92,8 +94,8 @@ public class MeetingDAO{
 				meetings.add(tmp);
 			}
 		}
-		preparedStatement.close();
 		resultSet.close();
+		preparedStatement.close();
 		
 		return meetings;
 
@@ -143,6 +145,7 @@ public class MeetingDAO{
 			}	
 			
 			invitationPreparedStatement.executeBatch();
+			connection.commit();
 			
 			
 		} catch (SQLException e) {

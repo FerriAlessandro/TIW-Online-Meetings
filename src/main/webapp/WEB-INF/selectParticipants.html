@@ -13,7 +13,7 @@
 					<h3>Registered users:</h3>
 					<p th:each="u : ${users}">
 						<input type="checkbox" name="user_id" th:value="${u.getID()}" th:checked="${selectedUsersID.contains(u.getID())}"/>
-						<label th:text="${u.getUserName()}">Ale</label>
+						<label th:text="${u.getUserName()}"></label>
 					</p>
 					<p>
 						<input type="hidden" name="title" th:value="${meeting.title}"/>
