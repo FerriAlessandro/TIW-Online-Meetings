@@ -130,6 +130,7 @@ public class CreateMeeting extends HttpServlet{
 				e.printStackTrace();
 				return;
 			}
+			ctx.setVariable("numParticipantsmsg", "You can choose up to "+ Meeting.MAX_PARTECIPANTS+" participants");
 			ctx.setVariable("users", registeredUsers);
 			ctx.setVariable("selectedUsersID", selectedUsersID);
 			ctx.setVariable("attempts", attempts);
@@ -191,7 +192,7 @@ public class CreateMeeting extends HttpServlet{
 				return;
 			}
 			
-			
+			ctx.setVariable("numParticipantsmsg", "You can choose up to "+ Meeting.MAX_PARTECIPANTS+" participants");
 			ctx.setVariable("users", registeredUsers);
 			ctx.setVariable("selectedUsersID", selectedUsersID);
 			ctx.setVariable("attempts", attempts);

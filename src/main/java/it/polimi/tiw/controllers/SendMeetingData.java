@@ -126,7 +126,7 @@ public class SendMeetingData extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error");
 			return;
 		}
-		
+		ctx.setVariable("numParticipantsmsg", "You can choose up to "+ Meeting.MAX_PARTECIPANTS+" participants");
 		ctx.setVariable("users", users);
 		ctx.setVariable("selectedUsersID", selectedUsersID);
 		ctx.setVariable("attempts", attempts);

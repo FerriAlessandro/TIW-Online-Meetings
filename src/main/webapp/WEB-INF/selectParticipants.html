@@ -7,6 +7,7 @@
 <body>
 	<div>
 		<p>Complete the form below to invite participants to your meeting</p>
+		<p th:text="${numParticipantsmsg}"></p>
 		<form action="#" th:action="@{/CreateMeeting}" method="post">
 			<fieldset>
 				<div th:if="${users.size() > 0}">
