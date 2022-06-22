@@ -108,12 +108,12 @@ public class SendMeetingData extends HttpServlet {
 			return;
 		}
 		
-		if(title.length()==0 || title == null) {
+		if(meeting.getTitle().length()==0 || meeting.getTitle() == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Empty Title field! Please insert a Title");
 			return;
 		}
 		
-		if(duration <= 0) {
+		if(meeting.getDuration() <= 0) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Duration! Please insert a valid number");
 			return;
 		}
