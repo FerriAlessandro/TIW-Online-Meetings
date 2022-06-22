@@ -31,8 +31,8 @@ public class UserDAO{
 
 		if(!queryResult.isBeforeFirst()) { //Credentials not found
 			
-			preparedStatement.close();
 			queryResult.close();
+			preparedStatement.close();
 			return null;
 		}
 			
@@ -42,6 +42,7 @@ public class UserDAO{
 			User user = new User();
 			user.setID(queryResult.getInt("id"));
 			user.setUserName(queryResult.getString("username"));
+
 			queryResult.close();
 			preparedStatement.close();
 			return user;
@@ -61,7 +62,7 @@ public class UserDAO{
 																			       //this query will return a result
 		String registrationQuery = "INSERT INTO user (username, psw, email) VALUES (?, ?, ?)";
 		
-		preparedStatement= connection.prepareStatement(checkQuery);
+		preparedStatement = connection.prepareStatement(checkQuery);
 		preparedStatement.setString(1,  username);
 		preparedStatement.setString(2,  email);
 		
@@ -79,6 +80,7 @@ public class UserDAO{
 			registrationPreparedStatement.setString(1, username);
 			registrationPreparedStatement.setString(2, password);
 			registrationPreparedStatement.setString(3, email);
+
 			registrationPreparedStatement.executeUpdate();
 			queryResult.close();
 			preparedStatement.close();
@@ -93,7 +95,7 @@ public class UserDAO{
 		PreparedStatement preparedStatement;
 		ResultSet queryResult;
 		ArrayList<User> users = new ArrayList<>();
-		String query = "select username, id from user where id!=?";
+		String query = "SELECT username, id FROM user WHERE id != ?";
 		preparedStatement = connection.prepareStatement(query);
 		int id = user.getID(); //The ID of the user who is creating a meeting, he can't invite himself! We remove him
 											  //from the list of possible users to invite

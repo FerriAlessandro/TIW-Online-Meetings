@@ -86,7 +86,7 @@ public class CheckRegistration extends HttpServlet {
 		try {
 			registration = userDAO.checkRegistration(username, password, email);
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error1");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error");
 			return;
 		}
 		
@@ -99,9 +99,14 @@ public class CheckRegistration extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error");
 				return;
 			}
-			request.getSession().setAttribute("user", user);
-			path = getServletContext().getContextPath() + "/HomePage";
-			response.sendRedirect(path);
+			
+			if (user != null) { 
+				request.getSession().setAttribute("user", user);
+				path = getServletContext().getContextPath() + "/HomePage";
+				response.sendRedirect(path);
+			}
+			else //should never happen
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Internal Database Error");
 		}
 		else {
 			ServletContext servletContext = getServletContext();
